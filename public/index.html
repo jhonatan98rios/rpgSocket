@@ -1,46 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Socket</title>
-    <script src="socket.io/socket.io.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Socket</title>
+  <script src="socket.io/socket.io.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 </head>
 <body>
 
     <h1>Socket</h1>
 
-    <h4 id="state"> </h4>
+    <div id="app">
+
+      <div v-if="!error">
+        <h2>
+          HP: {{ health }}
+        </h2>
+  
+        <button @click="attack">
+          Atacar
+        </button>
+      </div>
+
+      <p v-if="error">
+        {{ error }}
+      </p>
+
+    </div>
 
     <script>
 
-        const socket = io.connect()
+      const socket = io.connect()
 
-        /* Receivers */
+      const app = new Vue({
+        el: '#app',
+        data: {
+          error: '',
+          health: 200,
+        },
 
-        // First event in connection (default)
-        socket.on('connect', () => {
-            console.log("Conectado como", socket.id)
-        })
+        methods: {
+          damage: function () {
+            this.health -= 10;
 
-        // Exemple of message receive
-        socket.on('response', (socket) => {
-            console.log("Resposta recebida", socket)
-        })
+            if(this.health <= 0){
+              socket.emit('logout')
+              alert('Você perdeu')
+            }
+          },
+          attack: function(){
+            socket.emit('attack')
+          }
+        },
 
-        // Getting broadcast messages
-        socket.on('bc', (bc) => {
-            document.getElementById('state').append(bc + '<br>')
-        })
-        
+        mounted(){
 
-        /* Senders */
+          // First event in connection (default)
+          socket.on('connect', () => {
+            console.log("Conectado à", socket.room)
+          })
 
-        // Exemple of message send
-        /* function enviar(){
-            socket.emit('message')
-        } */
+          // Inflinct damage in the player
+          socket.on('damage', () => {
+            this.damage()
+          })
 
+          // When you win a battle
+          socket.on('win', (socket) => {
+            alert('Você venceu')
+          })
+
+          //failToEnter
+          socket.on('failToEnter', (socket) => {
+            this.error = 'Falha ao conectar. A sala esta cheia, desculpe'
+          })
+        }
+      })
 
     </script>
 </body>
