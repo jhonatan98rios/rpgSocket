@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket</title>
+    <script src="socket.io/socket.io.js"></script>
+</head>
+<body>
+
+    <h1>Socket</h1>
+
+    <h4 id="state"> </h4>
+
+    <script>
+
+        const socket = io.connect()
+
+        /* Receivers */
+
+        // First event in connection (default)
+        socket.on('connect', () => {
+            console.log("Conectado como", socket.id)
+        })
+
+        // Exemple of message receive
+        socket.on('response', (socket) => {
+            console.log("Resposta recebida", socket)
+        })
+
+        // Getting broadcast messages
+        socket.on('bc', (bc) => {
+            document.getElementById('state').append(bc + '<br>')
+        })
+        
+
+        /* Senders */
+
+        // Exemple of message send
+        /* function enviar(){
+            socket.emit('message')
+        } */
+
+
+    </script>
+</body>
+</html>
