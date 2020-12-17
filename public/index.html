@@ -9,75 +9,111 @@
 </head>
 <body>
 
-    <h1>Socket</h1>
+  <h1>Socket</h1>
 
-    <div id="app">
-
-      <div v-if="!error">
-        <h2>
-          HP: {{ health }}
-        </h2>
-  
-        <button @click="attack">
-          Atacar
-        </button>
-      </div>
-
-      <p v-if="error">
-        {{ error }}
-      </p>
-
+  <div id="app">
+    <div v-if="!error" class="personal">
+      <h2> HP: {{ user.health }} </h2>
+      <button @click="attack"> Atacar</button>
     </div>
 
-    <script>
+    <div class="oponnent">
+      <h2> Oponnent </h2>
+      <h2> HP: {{ oponnent.health }}</h2>
+    </div>
 
-      const socket = io.connect()
+    <p v-if="error" v-html="error" />
+    <p v-html="user.active" />
+    <p v-if="counter > 0" v-html="counter" />
+  </div>
+</body>
 
-      const app = new Vue({
-        el: '#app',
-        data: {
-          error: '',
-          health: 200,
-        },
+<script>
 
-        methods: {
-          damage: function () {
-            this.health -= 10;
+  const socket = io.connect()
 
-            if(this.health <= 0){
-              socket.emit('logout')
-              alert('Você perdeu')
-            }
-          },
-          attack: function(){
-            socket.emit('attack')
-          }
-        },
+  const app = new Vue({
+    el: '#app',
+    data: {
+      user:{
+        health: 200,
+        active: false,
+      },
+      oponnent: {
+        health: 200
+      },
+      counter: null,
+      turnTimer: null,
+      error: '',
+    },
 
-        mounted(){
+    methods: {
+      damage: function () {
+        this.user.health -= 10;
+        this.user.active = true
 
-          // First event in connection (default)
-          socket.on('connect', () => {
-            console.log("Conectado à", socket.room)
-          })
-
-          // Inflinct damage in the player
-          socket.on('damage', () => {
-            this.damage()
-          })
-
-          // When you win a battle
-          socket.on('win', (socket) => {
-            alert('Você venceu')
-          })
-
-          //failToEnter
-          socket.on('failToEnter', (socket) => {
-            this.error = 'Falha ao conectar. A sala esta cheia, desculpe'
-          })
+        if(this.user.health <= 0){
+          socket.emit('logout')
+          alert('Você perdeu')
         }
+      },
+
+      attack: function(){
+        if(this.user.active){
+          this.oponnent.health -= 10
+          socket.emit('attack')
+          this.user.active = false
+          socket.emit('changeTurn')
+        }
+      },
+
+      initiateCount: function(){
+
+        this.counter = 10
+
+        this.turnTimer = setInterval(() => {
+          if(this.counter > 0){
+            this.counter--
+
+          }else{
+            clearInterval(this.turnTimer)
+            this.user.active = false
+            socket.emit('changeTurn')
+          }
+        }, 1000)
+      }
+    },
+
+    mounted(){
+
+      // First event in connection (default)
+      socket.on('connect', () => {
+        console.log("Conectado como ", socket.id)
       })
 
-    </script>
-</body>
+      // Inflinct damage in the player
+      socket.on('damage', () => {
+        this.damage()
+      })
+
+      // 
+      socket.on('turnOn', () => {
+        this.user.active = true
+        this.initiateCount()
+        console.log('turnOn')
+      })
+
+      // When you win a battle
+      socket.on('win', (socket) => {
+        alert('Você venceu')
+      })
+
+      //failToEnter
+      socket.on('failToEnter', (socket) => {
+        this.error = 'Falha ao conectar. A sala esta cheia, desculpe'
+      })
+    }
+  })
+
+</script>
 </html>
