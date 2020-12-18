@@ -34,8 +34,10 @@ function connection(server){
       socket.join('beta')
       socket.room = 'beta'
   
-      if (socket.id == connectedUsers[0]) {
+
+      if (connectedUsers.length == 2){
         socket.emit('turnOn')
+        io.in(socket.room).emit('startGame')
       }
   
     } else {

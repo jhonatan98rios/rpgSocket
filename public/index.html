@@ -63,13 +63,15 @@
           this.oponnent.health -= 10
           socket.emit('attack')
           this.user.active = false
-          socket.emit('changeTurn')
+          /* clearInterval(this.turnTimer)
+          socket.emit('changeTurn') */
+          this.counter = 0
         }
       },
 
       initiateCount: function(){
 
-        this.counter = 10
+        this.counter = 5
 
         this.turnTimer = setInterval(() => {
           if(this.counter > 0){
@@ -89,6 +91,11 @@
       // First event in connection (default)
       socket.on('connect', () => {
         console.log("Conectado como ", socket.id)
+      })
+
+      // Start all this fuck
+      socket.on('startGame', () => {
+        this.health = 200
       })
 
       // Inflinct damage in the player
