@@ -10,12 +10,12 @@ async function createRoom(id, socket, io){
 
     if (connectedUsers.length == 2){
       console.log('startGame in', id)
-      //io.in(id).emit('startGame')
+      io.in(id).emit('startGame')
 
 
-      io.to(connectedUsers[0]).emit('startGame')
-      io.to(connectedUsers[1]).emit('startGame')
-      
+      /* io.to(connectedUsers[0]).emit('startGame')
+      io.to(connectedUsers[1]).emit('startGame') */
+
       socket.emit('turnOn')
     }
 
