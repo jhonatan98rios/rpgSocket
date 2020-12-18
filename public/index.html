@@ -9,22 +9,50 @@
 </head>
 <body>
 
-  <h1>Socket</h1>
+  <h1>RPG</h1>
 
   <div id="app">
-    <div v-if="!error" class="personal">
-      <h2> HP: {{ user.health }} </h2>
-      <button @click="attack"> Atacar</button>
+
+    <div class="welcome" v-if="room == null && !inProgress">
+      <p> Seja bem vindo </p>
+      <p> Deseja criar uma nova sala, ou acesar uma já criada? </p>
+      <button @click="() => room = 'new'"> 
+        Criar Sala 
+      </button>
+      <button @click="() => room = 'existent'"> 
+        Acessa sala
+      </button>
     </div>
 
-    <div class="oponnent">
-      <h2> Oponnent </h2>
-      <h2> HP: {{ oponnent.health }}</h2>
+    <div class="room-creation" v-if="room == 'new' && !inProgress">
+      <input type="text" placeholder="Dê um nome para a nova sala">
+      <button @click="()=> room = null"> Voltar </button>
+      <button @click="()=> inProgress = true"> Enter </button>
     </div>
 
-    <p v-if="error" v-html="error" />
-    <p v-html="user.active" />
-    <p v-if="counter > 0" v-html="counter" />
+    <div class="room-selection" v-if="room == 'existent' && !inProgress">
+      <input type="text" placeholder="Insira o nome da sala">
+      <button @click="()=> room = null"> Voltar </button>
+      <button @click="()=> inProgress = true"> Enter </button>
+    </div>
+
+    <div class="game" v-if="inProgress">
+      <div v-if="!error" class="personal">
+        <h2> HP: {{ user.health }} </h2>
+        <button @click="attack"> Atacar</button>
+      </div>
+  
+      <div class="oponnent">
+        <h2> Oponnent </h2>
+        <h2> HP: {{ oponnent.health }}</h2>
+      </div>
+  
+      <p v-if="error" v-html="error" />
+      <p v-html="user.active" />
+      <p v-if="counter > 0" v-html="counter" />
+    </div>
+
+
   </div>
 </body>
 
@@ -35,6 +63,8 @@
   const app = new Vue({
     el: '#app',
     data: {
+      room: null,
+      inProgress: false,
       user:{
         health: 200,
         active: false,
@@ -63,61 +93,93 @@
           this.oponnent.health -= 10
           socket.emit('attack')
           this.user.active = false
-          /* clearInterval(this.turnTimer)
-          socket.emit('changeTurn') */
+
+          console.log("attack > clearInterval")
+          clearInterval(this.turnTimer)
+
+          socket.emit('changeTurn')
           this.counter = 0
         }
       },
 
       initiateCount: function(){
+        if(!this.inProgress) return
 
         this.counter = 5
+
+        console.log("initiateCount > clearInterval")
+        clearInterval(this.turnTimer)
 
         this.turnTimer = setInterval(() => {
           if(this.counter > 0){
             this.counter--
 
           }else{
+
+            console.log("initiateCount > this.counter == 0 > clearInterval")
             clearInterval(this.turnTimer)
+
             this.user.active = false
             socket.emit('changeTurn')
           }
         }, 1000)
+      },
+
+      init(){
+
+        // Start all this fuck
+        socket.on('startGame', () => {
+          this.health = 200
+        })
+
+        // Inflinct damage in the player
+        socket.on('damage', () => {
+          this.damage()
+        })
+
+        // 
+        socket.on('turnOn', () => {
+          this.user.active = true
+          this.initiateCount()
+        })
+
+        socket.on('toogleTurn', () => {
+          //clearInterval(this.turnTimer)
+        })
+
+        socket.on('critical', () => {
+          console.log("Ataque crítico")
+        })
+
+        socket.on('missed', () => {
+          console.log("Você errou o golpe")
+        })
+
+
+        // When you win a battle
+        socket.on('win', (socket) => {
+          alert('Você venceu')
+        })
+
+        //failToEnter
+        socket.on('failToEnter', (socket) => {
+          this.error = 'Falha ao conectar. A sala esta cheia, desculpe'
+        })
+      }
+    },
+
+    watch:{
+      inProgress: ()=>{
+        if(this.inProgress){
+          this.init()
+        }
       }
     },
 
     mounted(){
-
       // First event in connection (default)
       socket.on('connect', () => {
         console.log("Conectado como ", socket.id)
-      })
-
-      // Start all this fuck
-      socket.on('startGame', () => {
-        this.health = 200
-      })
-
-      // Inflinct damage in the player
-      socket.on('damage', () => {
-        this.damage()
-      })
-
-      // 
-      socket.on('turnOn', () => {
-        this.user.active = true
-        this.initiateCount()
-        console.log('turnOn')
-      })
-
-      // When you win a battle
-      socket.on('win', (socket) => {
-        alert('Você venceu')
-      })
-
-      //failToEnter
-      socket.on('failToEnter', (socket) => {
-        this.error = 'Falha ao conectar. A sala esta cheia, desculpe'
       })
     }
   })

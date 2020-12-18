@@ -1,6 +1,7 @@
 const socketio = require('socket.io')
+const fightController = require('./fightController')
 
-function connection(server){
+module.exports = function connection(server){
 
   io = socketio(server)
 
@@ -11,7 +12,7 @@ function connection(server){
   
     // Exemple of message
     socket.on('attack', () => {
-      socket.to(socket.room).emit('damage')
+      fightController.attack(socket)
       io.in(socket.room).emit('toogleTurn')
     })
   
@@ -25,7 +26,7 @@ function connection(server){
     })
   
     // Send message for all user, except for the sender
-    socket.broadcast.emit('bc', socket.id + ' connected')
+    //socket.broadcast.emit('bc', socket.id + ' connected')
   
     let ids = await io.allSockets();
     let connectedUsers = [...ids]
@@ -45,9 +46,4 @@ function connection(server){
       socket.disconnect()
     }
   })
-}
-
-
-module.exports = {
-  connection
 }

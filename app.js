@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const server = require('http').createServer(app)
-const { connection } = require('./controllers/socketController')
+const connection = require('./controllers/socketController')
 
 // Create the server
 server.listen(process.env.PORT || 3000, () => {
