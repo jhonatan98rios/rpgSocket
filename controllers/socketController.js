@@ -1,5 +1,6 @@
 const socketio = require('socket.io')
 const fightController = require('./fightController')
+const roomController = require('./roomController')
 
 module.exports = function connection(server){
 
@@ -25,25 +26,14 @@ module.exports = function connection(server){
       socket.disconnect()
     })
   
-    // Send message for all user, except for the sender
-    //socket.broadcast.emit('bc', socket.id + ' connected')
-  
-    let ids = await io.allSockets();
-    let connectedUsers = [...ids]
-  
-    if (connectedUsers.length <= 2) {
-      socket.join('beta')
-      socket.room = 'beta'
-  
 
-      if (connectedUsers.length == 2){
-        socket.emit('turnOn')
-        io.in(socket.room).emit('startGame')
-      }
-  
-    } else {
-      socket.emit('failToEnter')
-      socket.disconnect()
-    }
+    socket.on('connectRoom', id => {
+      socket.room = id
+      roomController.createRoom(id, socket, io)
+    })
+
+
+    
+
   })
 }
