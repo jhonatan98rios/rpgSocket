@@ -40,18 +40,29 @@
         </div>
       </div>
 
+      <p class="m-0-a p-0 counter" v-html="counter" />
 
       <p v-if="user.active"> Seu turno </p>
       <p v-if="!user.active"> Turno do oponente </p>
-
-      <p class="m-0-a p-0" v-html="counter" />
 
       <div  class="personal">
         <div class="is-flex container m-0-a">
           <h2 class="m-0-a p-0"> HP: {{ user.health }} </h2>
           <h2 class="m-0-a p-0"> MP: 200 </h2>
         </div>
-        <button @click="attack" v-if="user.active"> Atacar</button>
+
+        <div class="is-flex m-t-32 is-end">
+          <div class="is-column controls">
+            <!-- <button @click="attack" v-if="user.active"> Atacar</button> -->
+            <button @click="attack"> Atacar</button>
+            <button> Magias</button>
+            <button> Itens</button>
+            <button> Opções</button>
+          </div>
+          <div class="is-column console">
+            
+          </div>
+        </div>
       </div>
     </div>
 
@@ -230,6 +241,16 @@ button{
   justify-content: space-around;
 }
 
+.is-column{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.is-end{
+  justify-content: end;
+}
+
 .container{
   max-width: 768px;
   width: 90%;
@@ -242,6 +263,10 @@ button{
 .m-y-16{
   margin-top: 16px;
   margin-bottom: 16px;
+}
+
+.m-t-16{
+  margin-top: 16px !important;
 }
 
 .m-t-32{
@@ -284,6 +309,34 @@ button{
 .game > .oponnent > .view > img{
   max-height: 75%;
   margin-top: 50px;
+}
+
+.counter{
+  background-color: #eee;
+  box-shadow: 0px 1px 3px rgba(0,0,0,.5);
+  width: 20px;
+  padding: 8px;
+  border-radius: 50%;
+  margin-top: -20px;
+}
+
+.controls, .console{
+  border: 1px solid #ccc;
+  width: 50%;
+  height: 100%;
+  min-height: 180px;
+}
+
+.controls > button{
+  background-color: transparent;
+  border: none;
+  width: 100%;
+  padding: 16px 0px;
+  margin: 0px;
+}
+
+.console{
+  overflow-y: auto;
 }
 
 </style>
