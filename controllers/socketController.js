@@ -1,5 +1,4 @@
 const socketio = require('socket.io')
-//const fightController = require('./fightController')
 const roomController = require('./roomController')
 
 module.exports = function connection(server){

@@ -50,28 +50,19 @@
 
       <div  class="personal">
         <div class="is-flex container m-0-a">
-          <h2 class="m-0-a p-0"> HP: {{ user.health }} </h2>
+          <h2 class="m-0-a p-0" :class="{ 'f-warning' : user.health < 20 }"> HP: {{ user.health }} </h2>
           <h2 class="m-0-a p-0"> MP: 200 </h2>
         </div>
 
         <div class="is-flex m-t-16 is-end panel">
           <div class="is-column controls">
-            <!-- <button @click="attack" v-if="user.active"> Atacar</button> -->
-            <button @click="attack"> Atacar</button>
-            <button> Magias</button>
+            <button v-if="user.active" @click="attack"> Atacar</button>
+            <!-- <button> Magias</button>
             <button> Itens</button>
-            <button> Opções</button>
+            <button> Opções</button> -->
           </div>
           <div class="is-column console">
-            testando testando testando testando testando testando testando testando testando testando testando testando testando testando <br>
-            testando testando testando testando testando testando testando testando testando testando testando testando testando testando <br>
-            testando testando testando testando testando testando testando testando testando testando testando testando testando testando <br>
-            testando testando testando testando testando testando testando testando testando testando testando testando testando testando <br>
-            testando testando testando testando testando testando testando testando testando testando testando testando testando testando <br>
-            testando testando testando testando testando testando testando testando testando testando testando testando testando testando <br>
-            testando testando testando testando testando testando testando testando testando testando testando testando testando testando <br>
-            testando testando testando testando testando testando testando testando testando testando testando testando testando testando <br>
-            testando testando testando testando testando testando testando testando testando testando testando testando testando testando <br>
+            {{ console }}
           </div>
         </div>
       </div>
@@ -100,7 +91,8 @@
       roomID: '',
       counter: null,
       turnTimer: null,
-      error: ''
+      error: '',
+      console: ''
     },
 
     methods: {
@@ -116,9 +108,16 @@
         this.user.health -= dmg;
         this.user.active = true
 
+        if(dmg != 0){
+          this.console += `Você perdeu ${dmg} pontos de HP; \n`
+        }else{
+          this.console += `Você se esquivou do golpe \n`
+        }
+
         if(this.user.health <= 0){
+          alert('Você perdeu!')
+          this.console += 'Você perdeu! \n'
           socket.emit('logout')
-          alert('Você perdeu')
         }
       },
 
@@ -130,6 +129,7 @@
           if(dmg != 0){
 
             this.oponnent.health -= dmg
+            this.console += `Seu golpe causou ${dmg} de dano; \n`
 
             this.$refs.opponent.classList.add("blink")
             let blinker = setInterval(() => {
@@ -139,7 +139,7 @@
             //console.log("attack > clearInterval")
             clearInterval(this.turnTimer)
           }else{
-            console.log('Vc errou')
+            this.console += 'Você errou o golpe; \n'
           }
 
           this.user.active = false
@@ -205,18 +205,13 @@
 
       //
       socket.on('critical', () => {
-        console.log("Ataque crítico")
+        this.console += 'Ataque crítico; \n'
       })
-
-      //
-      socket.on('missed', () => {
-        console.log("Você errou o golpe")
-      })
-
 
       // When you win a battle
       socket.on('win', () => {
         alert('Você venceu')
+        this.console += 'Você venceu!! \n'
         clearInterval(this.turnTimer)
       })
 
@@ -310,6 +305,10 @@ button{
 
 .p-o{
   padding: 0px;
+}
+
+.f-warning{
+  color: #f00;
 }
 
 .f-dark{
