@@ -9,11 +9,13 @@
 </head>
 <body class="m-0-a">
 
+  <div class="texture"></div>
+
   <div id="app">
 
     <!-- Login component -->
     <div class="welcome m-0-a text-center m-t-64" v-if="!inProgress && !loading">
-      <h2> Seja bem vindo </h2>
+      <h2 class="f-dark"> Seja bem vindo </h2>
       <p> Informe um novo ID para criar uma sala, <br> ou use um ID existente para se conectar </p>
 
       <input type="text" placeholder="Insira o nome da sala" v-model="roomID">
@@ -51,7 +53,7 @@
           <h2 class="m-0-a p-0"> MP: 200 </h2>
         </div>
 
-        <div class="is-flex m-t-16 is-end">
+        <div class="is-flex m-t-16 is-end panel">
           <div class="is-column controls">
             <!-- <button @click="attack" v-if="user.active"> Atacar</button> -->
             <button @click="attack"> Atacar</button>
@@ -60,7 +62,15 @@
             <button> Opções</button>
           </div>
           <div class="is-column console">
-            
+            testando testando testando testando testando testando testando testando testando testando testando testando testando testando <br>
+            testando testando testando testando testando testando testando testando testando testando testando testando testando testando <br>
+            testando testando testando testando testando testando testando testando testando testando testando testando testando testando <br>
+            testando testando testando testando testando testando testando testando testando testando testando testando testando testando <br>
+            testando testando testando testando testando testando testando testando testando testando testando testando testando testando <br>
+            testando testando testando testando testando testando testando testando testando testando testando testando testando testando <br>
+            testando testando testando testando testando testando testando testando testando testando testando testando testando testando <br>
+            testando testando testando testando testando testando testando testando testando testando testando testando testando testando <br>
+            testando testando testando testando testando testando testando testando testando testando testando testando testando testando <br>
           </div>
         </div>
       </div>
@@ -89,7 +99,7 @@
       roomID: '',
       counter: null,
       turnTimer: null,
-      error: '',
+      error: ''
     },
 
     methods: {
@@ -215,6 +225,11 @@
 
 <style scoped>
 
+  @font-face {
+    font-family: DarkShadow;
+    src: url(./static/DarkShadow.ttf);
+  }
+
 /* Globais */
 *, body{
   font-family: sans-serif;
@@ -290,11 +305,26 @@ button{
   padding: 0px;
 }
 
+.f-dark{
+  font-family: DarkShadow;
+  font-size: 36px;
+}
+
 /* CSSOM */
 
-.welcome > h2, .loading > h2 {
-  color: #55ccff;
-}
+/* .texture{
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  top: 0px;
+  left: 0px;
+  z-index: -1;
+  background-image: url(./static/texture.jpg);
+  background-size: cover;
+  background-position: center;
+  opacity: .5;
+  filter: blur(1);
+} */
 
 .game > .oponnent > .is-flex{
   width: 100%;
@@ -325,23 +355,35 @@ button{
   margin-top: -20px;
 }
 
+.personal{
+  border-top: 1px #ccc solid;
+  padding-top: 16px;
+}
+
+.panel{
+  background-color: whitesmoke;
+}
+
 .controls, .console{
   border: 1px solid #ccc;
+  border-bottom: none;
   width: 50%;
-  height: 100%;
-  min-height: 180px;
+  height: 200px;
 }
 
 .controls > button{
   background-color: transparent;
   border: none;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0px;
   width: 100%;
-  padding: 16px 0px;
+  height: 50px;
   margin: 0px;
 }
 
 .console{
-  overflow-y: auto;
+  overflow-y: scroll;
+  height: 200px;
 }
 
 /* Damage effect implementation */
