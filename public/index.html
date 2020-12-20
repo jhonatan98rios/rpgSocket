@@ -11,10 +11,8 @@
 
   <div id="app">
 
-    <h1 class="text-center m-t-32" v-if="!inProgress">RPG.io</h1>
-
     <!-- Login component -->
-    <div class="welcome m-0-a text-center" v-if="!inProgress && !loading">
+    <div class="welcome m-0-a text-center m-t-64" v-if="!inProgress && !loading">
       <h2> Seja bem vindo </h2>
       <p> Informe um novo ID para criar uma sala, <br> ou use um ID existente para se conectar </p>
 
@@ -23,7 +21,7 @@
     </div>
 
     <!-- Loading component -->
-    <div class="loading m-0-a text-center" v-if="loading && !inProgress">
+    <div class="loading m-0-a text-center m-t-64" v-if="loading && !inProgress">
       <h2> Aguardando oponente </h2>
       <p> Não se esqueça de <br> enviar o nome da sala que você criou <br> para um amigo</p>
     </div>
@@ -250,6 +248,10 @@ button{
   margin-top: 32px !important;
 }
 
+.m-t-64{
+  margin-top: 64px !important;
+}
+
 .m-0-a{
   margin: 0 auto;
 }
@@ -267,7 +269,6 @@ button{
 .game > .oponnent > .is-flex{
   width: 100%;
   height: 50px;
-  background-color: #ccc;
   margin: 0 auto;
   padding-bottom: 16px;
 }
@@ -275,12 +276,14 @@ button{
 .game > .oponnent > .view{
   height: 350px;
   width: 100%;
-  background-image: linear-gradient(to bottom, #ccc, #000);
+  background-image: url(./static/background.jpg);
+  background-size: 130%;
+  background-position: 40% 100%;
 }
 
 .game > .oponnent > .view > img{
-  max-height: 80%;
-  margin-top: 10%;
+  max-height: 75%;
+  margin-top: 50px;
 }
 
 </style>
