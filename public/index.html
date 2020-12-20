@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RPG.io</title>
   <script src="socket.io/socket.io.js"></script>
+  <script src="./scripts/controllers.js"></script>
   <script src="./vue.js"></script>
 </head>
 <body class="m-0-a">
@@ -111,8 +112,8 @@
         }
       },
 
-      damage: function () {
-        this.user.health -= 10;
+      damage: function (dmg) {
+        this.user.health -= dmg;
         this.user.active = true
 
         if(this.user.health <= 0){
@@ -123,18 +124,25 @@
 
       attack: function(){
         if(this.user.active){
-          this.oponnent.health -= 10
-          socket.emit('attack')
+
+          let dmg = attackEmiter(socket)
+          
+          if(dmg != 0){
+
+            this.oponnent.health -= dmg
+
+            this.$refs.opponent.classList.add("blink")
+            let blinker = setInterval(() => {
+              this.$refs.opponent.classList.remove("blink")
+            }, 1000)
+  
+            //console.log("attack > clearInterval")
+            clearInterval(this.turnTimer)
+          }else{
+            console.log('Vc errou')
+          }
+
           this.user.active = false
-
-          this.$refs.opponent.classList.add("blink")
-          let blinker = setInterval(() => {
-            this.$refs.opponent.classList.remove("blink")
-          }, 1000)
-
-          //console.log("attack > clearInterval")
-          clearInterval(this.turnTimer)
-
           socket.emit('changeTurn')
           this.counter = 0
         }
@@ -184,9 +192,8 @@
       })
 
       // Inflinct damage in the player
-      socket.on('damage', () => {
-        //console.log('damage')
-        this.damage()
+      socket.on('damage', (dmg) => {
+        this.damage(dmg)
       })
 
       // 
