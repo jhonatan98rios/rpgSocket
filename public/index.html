@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RPG.io</title>
   <script src="socket.io/socket.io.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="./vue.js"></script>
 </head>
 <body class="m-0-a">
 
@@ -36,7 +36,7 @@
         </div>
 
         <div class="view">
-          <img src="./static/warrior.png" alt="oponente">
+          <img ref="opponent" src="./static/warrior.png" alt="oponente">
         </div>
       </div>
 
@@ -51,7 +51,7 @@
           <h2 class="m-0-a p-0"> MP: 200 </h2>
         </div>
 
-        <div class="is-flex m-t-32 is-end">
+        <div class="is-flex m-t-16 is-end">
           <div class="is-column controls">
             <!-- <button @click="attack" v-if="user.active"> Atacar</button> -->
             <button @click="attack"> Atacar</button>
@@ -116,6 +116,11 @@
           this.oponnent.health -= 10
           socket.emit('attack')
           this.user.active = false
+
+          this.$refs.opponent.classList.add("blink")
+          let blinker = setInterval(() => {
+            this.$refs.opponent.classList.remove("blink")
+          }, 1000)
 
           //console.log("attack > clearInterval")
           clearInterval(this.turnTimer)
@@ -339,5 +344,15 @@ button{
   overflow-y: auto;
 }
 
+/* Damage effect implementation */
+.blink {
+  animation: blinker .5s infinite;
+}
+
+@keyframes blinker {
+  0%{ opacity: 0 } 
+  50%{ opacity: 1 } 
+  100%{ opacity: 0 } 
+}
 </style>
 </html>
