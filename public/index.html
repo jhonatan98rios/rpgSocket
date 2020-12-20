@@ -23,7 +23,7 @@
     </div>
 
     <!-- Loading component -->
-    <div class="loading m-0-a text-center m-t-64" v-if="loading && !inProgress">
+    <div class="loading m-0-a text-center m-t-64" v-if="loading && !inProgress && !error">
       <h2> Aguardando oponente </h2>
       <p> Não se esqueça de <br> enviar o nome da sala que você criou <br> para um amigo</p>
     </div>
@@ -76,7 +76,7 @@
       </div>
     </div>
 
-    <p v-if="error" v-html="error" />
+    <p class="m-0-a text-center m-t-64" v-if="error" v-html="error" />
   </div>
 </body>
 
