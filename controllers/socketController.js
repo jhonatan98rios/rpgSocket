@@ -1,5 +1,4 @@
 const socketio = require('socket.io')
-const fightController = require('./fightController')
 const roomController = require('./roomController')
 
 module.exports = function connection(server){
@@ -12,8 +11,10 @@ module.exports = function connection(server){
     console.log('\nNova conexão')
   
     // Exemple of message
-    socket.on('attack', () => {
-      fightController.attack(socket)
+    socket.on('attack', (dmg) => {
+      //fightController.attack(socket)
+      console.log(dmg)
+      socket.to(socket.room).emit('damage', dmg)
       io.in(socket.room).emit('toogleTurn')
     })
   
