@@ -1,21 +1,21 @@
 async function createRoom(id, socket, io){
 
-  let room = await io.in(id).allSockets()
-  let clients = [...room].length
+  let room = await io.in(id).allSockets() // Get all clients in room
+  let clients = [...room].length // Number of clients in room
 
   if(clients){
 
     if(clients < 2){
-      console.log('startGame in', id)
+      // Add a new player in room
       socket.join(id)
-
       clients++
 
       if(clients == 2){
+        // Start a game when the room has 2 clients
         io.in(id).emit('startGame')
         socket.emit('turnOn')
-
       }
+
     }else{
       // Just 2 clients for room
       socket.emit('failToEnter')
@@ -23,7 +23,7 @@ async function createRoom(id, socket, io){
     }
 
   }else{
-    console.log('Created a new room: ', id)
+    // If the room dont exist, create a new room
     socket.join(id)
   }
 }

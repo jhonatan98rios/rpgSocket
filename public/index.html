@@ -89,7 +89,7 @@
       inProgress: false,
       loading: false,
       roomID: '',
-      counter: null,
+      counter: 0,
       turnTimer: null,
       error: '',
       console: ''
@@ -100,7 +100,6 @@
         if(this.roomID){
           socket.emit('connectRoom', this.roomID)
           this.loading = true
-          //console.log(this.roomID)
         }
       },
 
@@ -109,14 +108,16 @@
         this.user.active = true
 
         if(dmg != 0){
-          this.console += `Você perdeu ${dmg} pontos de HP; \n`
+          this.console = `Você perdeu ${dmg} pontos de HP`
+          if (dmg > 15) this.console += '\nAtaque crítico!'
+
         }else{
-          this.console += `Você se esquivou do golpe \n`
+          this.console = `Você se esquivou do golpe`
         }
 
         if(this.user.health <= 0){
           alert('Você perdeu!')
-          this.console += 'Você perdeu! \n'
+          this.console = 'Você perdeu!'
           socket.emit('logout')
         }
       },
@@ -129,19 +130,18 @@
           if(dmg != 0){
 
             this.oponnent.health -= dmg
-            this.console += `Seu golpe causou ${dmg} de dano; \n`
-
-            this.$refs.opponent.classList.add("blink")
-            let blinker = setInterval(() => {
-              this.$refs.opponent.classList.remove("blink")
-            }, 1000)
+            this.console = `Seu golpe causou ${dmg} de dano`
+            if (dmg > 15) this.console += '\nAtaque crítico!'
+            
+            // Make animation
+            makeAnimation(this.$refs.opponent)
   
-            //console.log("attack > clearInterval")
-            clearInterval(this.turnTimer)
           }else{
-            this.console += 'Você errou o golpe; \n'
+            // Missed attack
+            this.console = 'Você errou o golpe;'
           }
 
+          clearInterval(this.turnTimer)
           this.user.active = false
           socket.emit('changeTurn')
           this.counter = 0
@@ -151,44 +151,34 @@
       initiateCount: function(){
         this.counter = 5
 
-        //console.log("initiateCount > clearInterval")
         clearInterval(this.turnTimer)
-
         this.turnTimer = setInterval(() => {
+
           if(this.counter > 0){
             this.counter--
 
           }else{
 
-            //console.log("initiateCount > this.counter == 0 > clearInterval")
             clearInterval(this.turnTimer)
-
             this.user.active = false
             socket.emit('changeTurn')
+
           }
         }, 1000)
       },
     },
 
     mounted(){
-      //console.log('Mounted')
 
       // First event in connection (default)
       socket.on('connect', () => {
-        //console.log("Conectado como ", socket.id)
       })
 
       // Start all this fuck
       socket.on('startGame', () => {
-        //console.log('Deveria ter começado')
         this.health = 200
         this.inProgress = true
         this.loading = false
-      })
-
-      socket.on('teste', ()=>{
-        //console.log('Testando')
-
       })
 
       // Inflinct damage in the player
@@ -198,26 +188,19 @@
 
       // 
       socket.on('turnOn', () => {
-        console.log('turnOn')
         this.user.active = true
         this.initiateCount()
-      })
-
-      //
-      socket.on('critical', () => {
-        this.console += 'Ataque crítico; \n'
       })
 
       // When you win a battle
       socket.on('win', () => {
         alert('Você venceu')
-        this.console += 'Você venceu!! \n'
+        this.console += '\nVocê venceu!!'
         clearInterval(this.turnTimer)
       })
 
       //failToEnter
       socket.on('failToEnter', () => {
-        //console.log('failToEnter')
         this.error = 'Falha ao conectar. A sala esta cheia, desculpe'
       })
     }
@@ -318,20 +301,6 @@ button{
 
 /* CSSOM */
 
-/* .texture{
-  position: absolute;
-  width: 100%;
-  height: 100vh;
-  top: 0px;
-  left: 0px;
-  z-index: -1;
-  background-image: url(./static/texture.jpg);
-  background-size: cover;
-  background-position: center;
-  opacity: .5;
-  filter: blur(1);
-} */
-
 .game > .oponnent > .is-flex{
   width: 100%;
   height: 50px;
@@ -390,6 +359,8 @@ button{
 .console{
   overflow-y: scroll;
   height: 200px;
+  width: 50%;
+  padding: 16px 8px;
 }
 
 /* Damage effect implementation */
