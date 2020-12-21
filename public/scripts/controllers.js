@@ -1,24 +1,21 @@
-function attackEmiter(socket){
+function attackEmiter(socket) {
 
-    let precision = Math.floor(Math.random() * 20)
-    let damage = Number()
+  let precision = Math.floor(Math.random() * 20)
+  let damage = precision < 3 ? 0 :
+    precision <= 10 ? Math.floor(Math.random() * 5) + 5 :
+      precision <= 15 ? Math.floor(Math.random() * 5) + 10 :
+        Math.floor(Math.random() * 5) + 15
 
-    if(precision < 3){
-        damage =  0
-        socket.emit('missed')
+  socket.emit('attack', damage)
 
-    } else if(precision <= 10){
-        damage =  Math.floor(Math.random() * 5) + 5
+  return damage
+}
 
-    }else if(precision <= 15){
-        damage =  (Math.floor(Math.random() * 5) * 2) + 5
+function makeAnimation(opponent) {
+  opponent.classList.add("blink")
 
-    }else{
-        damage =  (Math.floor(Math.random() * 5) * 3) + 10
-        socket.emit('critical')
-    }
-
-    socket.emit('attack', damage)
-
-    return damage
+  let blinker = setInterval(() => {
+    opponent.classList.remove("blink")
+    clearInterval(blinker)
+  }, 1000)
 }
