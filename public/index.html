@@ -6,7 +6,8 @@
   <title>RPG.io</title>
   <script src="socket.io/socket.io.js"></script>
   <script src="./scripts/controllers.js"></script>
-  <script src="./vue.js"></script>
+  <script src="./scripts/vue.js"></script>
+  <link rel="stylesheet" href="./static/styles/style.css">
 </head>
 <body class="m-0-a">
 
@@ -39,7 +40,7 @@
         </div>
 
         <div class="view">
-          <img ref="opponent" src="./static/warrior.png" alt="oponente">
+          <img ref="opponent" src="./static/images/warrior.png" alt="oponente">
         </div>
       </div>
 
@@ -172,6 +173,7 @@
 
       // First event in connection (default)
       socket.on('connect', () => {
+        console.log('Connected')
       })
 
       // Start all this fuck
@@ -207,171 +209,4 @@
   })
 
 </script>
-
-<style scoped>
-
-  @font-face {
-    font-family: DarkShadow;
-    src: url(./static/DarkShadow.ttf);
-  }
-
-/* Globais */
-*, body{
-  font-family: sans-serif;
-}
-
-p, button, input{
-  color: #333;
-}
-
-input{
-  border-radius: 4px;
-  padding: 8px;
-  border: solid 1px #ccc;
-  width: 50%;
-  max-width: 230px;
-}
-
-button{
-  border-radius: 4px;
-  padding: 8px;
-  border: solid 1px #ccc;
-  margin-left: 8px;
-}
-
-/* Utillity classes */
-
-.is-flex{
-  display: flex;
-  justify-content: space-around;
-}
-
-.is-column{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.is-end{
-  justify-content: end;
-}
-
-.container{
-  max-width: 768px;
-  width: 90%;
-}
-
-.text-center{
-  text-align: center;
-}
-
-.m-y-16{
-  margin-top: 16px;
-  margin-bottom: 16px;
-}
-
-.m-t-16{
-  margin-top: 16px !important;
-}
-
-.m-t-32{
-  margin-top: 32px !important;
-}
-
-.m-t-64{
-  margin-top: 64px !important;
-}
-
-.m-0-a{
-  margin: 0 auto;
-}
-
-.p-o{
-  padding: 0px;
-}
-
-.f-warning{
-  color: #f00;
-}
-
-.f-dark{
-  font-family: DarkShadow;
-  font-size: 36px;
-}
-
-/* CSSOM */
-
-.game > .oponnent > .is-flex{
-  width: 100%;
-  height: 50px;
-  margin: 0 auto;
-  padding-bottom: 16px;
-}
-
-.game > .oponnent > .view{
-  height: 350px;
-  width: 100%;
-  background-image: url(./static/background.jpg);
-  background-size: 130%;
-  background-position: 40% 100%;
-}
-
-.game > .oponnent > .view > img{
-  max-height: 75%;
-  margin-top: 50px;
-}
-
-.counter{
-  background-color: #eee;
-  box-shadow: 0px 1px 3px rgba(0,0,0,.5);
-  width: 20px;
-  padding: 8px;
-  border-radius: 50%;
-  margin-top: -20px;
-}
-
-.personal{
-  border-top: 1px #ccc solid;
-  padding-top: 16px;
-}
-
-.panel{
-  background-color: whitesmoke;
-}
-
-.controls, .console{
-  border: 1px solid #ccc;
-  border-bottom: none;
-  width: 50%;
-  height: 200px;
-}
-
-.controls > button{
-  background-color: transparent;
-  border: none;
-  border-bottom: 1px solid #ccc;
-  border-radius: 0px;
-  width: 100%;
-  height: 50px;
-  margin: 0px;
-}
-
-.console{
-  overflow-y: scroll;
-  height: 200px;
-  width: 50%;
-  padding: 16px 8px;
-}
-
-/* Damage effect implementation */
-.blink {
-  animation: blinker .5s infinite;
-}
-
-@keyframes blinker {
-  0%{ opacity: 0 } 
-  50%{ opacity: 1 } 
-  100%{ opacity: 0 } 
-}
-</style>
 </html>
