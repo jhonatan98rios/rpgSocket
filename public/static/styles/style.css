@@ -1,0 +1,164 @@
+/* CSSOM */
+
+/* Login screen */
+.welcome{
+  background-image: url(../images/paper.png);
+  height: 80vh;
+  background-repeat: no-repeat;
+  background-position: top;
+  background-size: contain;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.welcome > p, .welcome > small {
+  width: 60%;
+  max-width: 320px;
+  text-align: center;
+  margin: 0px auto;
+  color: #333333;
+}
+
+.welcome > input{
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px #333333 solid;
+  margin: 16px auto;
+  font-size: 16px;
+}
+
+.welcome > input:focus{
+  outline: none;
+}
+
+.welcome > button{
+  background-color: transparent;
+  border: none;
+  width: 100px;
+  height: 32px;
+}
+
+.welcome > button:focus{
+  outline: none;
+}
+
+/* Loading */
+
+.loading{
+  height: 80vh;
+}
+
+.loading > h2, .loading > p{
+  color: #ccc;
+}
+
+/* Game */
+
+.game > .oponnent{
+  z-index: 1;
+}
+
+.game > .oponnent > .header{
+  width: calc(100% - 6px);
+  height: 50px;
+  margin: 0 auto;
+  padding-bottom: 16px;
+  background-image:linear-gradient(#150C85, #000000);
+  border: 3px solid #ccc;
+}
+
+.game > .oponnent > .header > .container > h2{
+  color: #eee;
+}
+
+/* Center panel */
+
+.game > .oponnent > .view{
+  height: 500px;
+  width: 100%;
+  background-image: url(../images/background.jpg);
+  background-size: cover;
+  background-position: 40% 100%;
+  z-index: -1;
+}
+
+
+.game > .oponnent > .view > img{
+  max-height: 55%;
+  margin-top: 150px;
+}
+
+/* Bottom panel */
+
+.personal{
+  padding-top: 16px;
+  background-image:linear-gradient(#000000, #150C85, #000000);
+  border: 3px solid #ccc;
+}
+
+.personal > .turn{
+  margin-top: -64px;
+  margin-bottom: 12px;
+  font-family: sans-serif;
+  color: #eee;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px #000000;
+}
+
+.personal > .counter{
+  background-color: #000;
+  border: 3px solid #ccc;
+  color: #fff;
+  box-shadow: 0px 1px 3px rgba(0,0,0,.5);
+  width: 20px;
+  height: 20px;
+  padding: 8px;
+  border-radius: 50%;
+  font-family: sans-serif;
+  font-size: 18px;
+}
+
+.personal > .status > h2{
+  color: #ccc;
+}
+
+.personal > .panel{
+  border-top: 3px solid #ccc;
+  width: calc(100% - 64px);
+  height: 100px;
+  padding: 16px 32px;
+  color: #eee;
+}
+
+/* Damage effect implementation */
+.blink {
+  animation: blinker .5s infinite;
+}
+
+@keyframes blinker {
+  0%{ opacity: 0 } 
+  50%{ opacity: 1 } 
+  100%{ opacity: 0 } 
+}
+
+/* Floating buttons */
+
+.game > .controls{
+  border-bottom: none;
+  width: 100px;
+  min-height: 300px;
+  height: auto;
+  position: absolute;
+  right: 0px;
+  top: 200px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+}
+
+.game > .controls > img{
+  width: 60px;
+  height: 60px;
+  margin: 10px;
+}
