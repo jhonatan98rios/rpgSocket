@@ -1,0 +1,63 @@
+/* Utillity classes */
+
+.is-flex{
+  display: flex;
+  justify-content: space-around;
+}
+
+.is-column{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.is-end{
+  justify-content: end;
+}
+
+.container{
+  max-width: 768px;
+  width: 90%;
+}
+
+.text-center{
+  text-align: center;
+}
+
+.m-y-16{
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.m-t-16{
+  margin-top: 16px !important;
+}
+
+.m-t-32{
+  margin-top: 32px !important;
+}
+
+.m-t-64{
+  margin-top: 64px !important;
+}
+
+.p-t-64{
+  padding-top: 64px !important;
+}
+
+.m-0-a{
+  margin: 0 auto;
+}
+
+.p-o{
+  padding: 0px;
+}
+
+.f-warning{
+  color: #f00;
+}
+
+.f-dark{
+  font-family: DarkShadow;
+  font-size: 36px;
+}

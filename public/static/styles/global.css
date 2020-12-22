@@ -1,0 +1,35 @@
+@font-face {
+  font-family: DarkShadow;
+  src: url(../fonts/DarkShadow.ttf);
+}
+
+/* Globais */
+*, body{
+  font-family: sans-serif;
+}
+
+body{
+    margin: 0 auto;
+    background-image: radial-gradient(#555, #000);
+    overflow-y: hidden;
+}
+
+p, button, input, small{
+  color: #333;
+  font-family: cursive;
+}
+
+input{
+  border-radius: 4px;
+  padding: 8px;
+  border: solid 1px #ccc;
+  width: 50%;
+  max-width: 230px;
+}
+
+/* button{
+  border-radius: 4px;
+  padding: 8px;
+  border: solid 1px #ccc;
+  margin-left: 8px;
+} */
