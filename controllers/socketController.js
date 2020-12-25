@@ -7,9 +7,15 @@ module.exports = function connection(server){
 
   io.on('connection', async (socket) => {
   
-    // Exemple of message
+    // 
     socket.on('attack', (dmg) => {
       socket.to(socket.room).emit('damage', dmg)
+      io.in(socket.room).emit('toogleTurn')
+    })
+
+    // useCure
+    socket.on('useCure', (cureValue) => {
+      socket.to(socket.room).emit('oponnentCure', cureValue)
       io.in(socket.room).emit('toogleTurn')
     })
   

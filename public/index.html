@@ -70,7 +70,7 @@
       <!-- Event controls -->
       <div class="is-column controls" v-if="user.active">
         <img src="./static/images/attack.png" alt="Ataque" @click="attack">
-        <img src="./static/images/itens.png" alt="Itens" @click="unavailable">
+        <img src="./static/images/itens.png" alt="Itens" @click="useCure" v-if="hasPotion">
         <img src="./static/images/special.png" alt="Especial" @click="unavailable">
       </div>
     </div>
@@ -99,7 +99,8 @@
       counter: 0,
       turnTimer: null,
       error: '',
-      console: ''
+      console: '',
+      hasPotion: true
     },
 
     methods: {
@@ -130,6 +131,11 @@
         }
       },
 
+      oponnentCure: function(cureValue){
+        this.oponnent.health += cureValue
+        this.console = `Seu oponente usou uma poção de cura. Ele recuperou ${cureValue} pontos de vida`
+      },
+
       attack: function(){
         if(this.user.active){
 
@@ -149,10 +155,20 @@
             this.console = 'Você errou o golpe;'
           }
 
-          clearInterval(this.turnTimer)
-          this.user.active = false
-          socket.emit('changeTurn')
-          this.counter = 0
+          this.endTurn()
+        }
+      },
+
+      useCure(){
+        if(this.hasPotion){
+          this.hasPotion = false
+          let cureValue = cureEmitter(socket, this.user.health)
+          this.user.health += cureValue
+          this.console = `Você usou uma poção de cura e recuperou ${cureValue} pontos de vida`
+          this.endTurn()
+
+        }else{
+          this.console = `Você não tem mais poções`
         }
       },
 
@@ -178,6 +194,13 @@
           }
         }, 1000)
       },
+
+      endTurn(){
+        clearInterval(this.turnTimer)
+        this.user.active = false
+        socket.emit('changeTurn')
+        this.counter = 0
+      }
     },
 
     mounted(){
@@ -197,6 +220,11 @@
       // Inflinct damage in the player
       socket.on('damage', (dmg) => {
         this.damage(dmg)
+      })
+
+      // oponnentCure
+      socket.on('oponnentCure', (cureValue) => {
+        this.oponnentCure(cureValue)
       })
 
       // 

@@ -19,3 +19,14 @@ function makeAnimation(opponent) {
     clearInterval(blinker)
   }, 1000)
 }
+
+function cureEmitter(socket, userHealth){
+  let cureValue = (Math.floor(Math.random() * 20)) + 10
+
+  if(userHealth + cureValue > 200){
+    cureValue = 200 - userHealth
+  }
+
+  socket.emit('useCure', cureValue)
+  return cureValue
+}
