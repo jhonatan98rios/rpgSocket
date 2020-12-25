@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
   <meta name="theme-color" content="#000000" />
   <title>RPG.io</title>
 
@@ -69,9 +70,9 @@
 
       <!-- Event controls -->
       <div class="is-column controls" v-if="user.active">
-        <img src="./static/images/attack.png" alt="Ataque" @click="attack">
-        <img src="./static/images/itens.png" alt="Itens" @click="useCure" v-if="hasPotion">
-        <img src="./static/images/special.png" alt="Especial" @click="unavailable">
+        <img src="./static/images/attack.svg" alt="Ataque" @click="attack">
+        <img src="./static/images/itens.svg" alt="Itens" @click="useCure" v-if="hasPotion">
+        <img src="./static/images/defense.svg" alt="Defesa" @click="unavailable">
       </div>
     </div>
 
