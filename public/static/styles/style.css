@@ -83,6 +83,13 @@
   z-index: -1;
 }
 
+@media(max-height: 700px){
+  .game > .oponnent > .view{
+    position: absolute;
+    top: 0px;
+  }
+}
+
 
 .game > .oponnent > .view > img{
   max-height: 55%;
@@ -101,7 +108,7 @@
   .personal{
     position: fixed;
     bottom: 0;
-    width: 100%;
+    width: calc(100% - 6px);
   }
 }
 
