@@ -1,9 +1,9 @@
-/* CSSOM */
-
 /* Login screen */
 .welcome{
   background-image: url(../images/paper.png);
-  height: 80vh;
+  min-height: 700px;
+  width: 90vw;
+  max-width: 700px;
   background-repeat: no-repeat;
   background-position: top;
   background-size: contain;

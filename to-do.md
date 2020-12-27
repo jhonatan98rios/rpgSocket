@@ -1,12 +1,11 @@
 # Backend
-Implementar turnos
-Adicionar aleatoriedade no dano
-Adicionar chance de erro ao ataque
-Implementar criação de salas pelo cliente
-Adicionar estados positivos e negativos
-Adicionar mecanismos de cura
+Adicionar mecanismos de cura ✓
+2 - Adicionar função de defesa ✓
+5 - Adicionar mensageria
+
 
 # Interface
-Visualizar vida do oponente
-Adicionar barra de MP
-Adicionar tela de login em sala criada ou criação de nova sala
+Adicionar botão de defesa ✓
+3 - Remover MP
+1 - Refazer os icones em svg ✓
+4 - Adicionar barra de vida
