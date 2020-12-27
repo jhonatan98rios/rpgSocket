@@ -72,7 +72,7 @@
       <div class="is-column controls" v-if="user.active">
         <img src="./static/images/attack.svg" alt="Ataque" @click="attack">
         <img src="./static/images/itens.svg" alt="Itens" @click="useCure" v-if="hasPotion">
-        <img src="./static/images/defense.svg" alt="Defesa" @click="unavailable">
+        <img src="./static/images/defense.svg" alt="Defesa" @click="useDefense">
       </div>
     </div>
 
@@ -90,9 +90,11 @@
       user:{
         health: 200,
         active: false,
+        defense: false
       },
       oponnent: {
-        health: 200
+        health: 200,
+        defense: false
       },
       inProgress: false,
       loading: false,
@@ -114,8 +116,14 @@
       },
 
       damage: function (dmg) {
-        this.user.health -= dmg;
         this.user.active = true
+
+        if(this.user.defense && dmg == -1){
+          this.userCounterAttack()
+          return
+        }
+
+        this.user.health -= dmg;
 
         if(dmg != 0){
           this.console = `Você perdeu ${dmg} pontos de HP`
@@ -137,10 +145,33 @@
         this.console = `Seu oponente usou uma poção de cura. Ele recuperou ${cureValue} pontos de vida`
       },
 
+      oponnentCounterAttack: function(){
+        this.oponnent.defense = false
+        this.user.health -= 20
+        this.console = 'Seu oponente contra atacou. Você recebeu 20 pontos de dano'
+        if(this.user.health <= 0){
+          alert('Você perdeu!')
+          this.console = 'Você perdeu!'
+          socket.emit('logout')
+        }
+      },
+
+      userCounterAttack: function(){
+        this.user.defense = false
+        this.oponnent.health -= 20
+        this.console = 'Você contra atacou. Seu oponente recebeu 20 pontos de dano'
+      },
+
       attack: function(){
         if(this.user.active){
 
-          let dmg = attackEmiter(socket)
+          let dmg = attackEmiter(socket, this.oponnent.defense)
+
+          if(dmg == -1){
+            this.oponnentCounterAttack()
+            this.endTurn()
+            return
+          }
           
           if(dmg != 0){
 
@@ -173,12 +204,20 @@
         }
       },
 
+      useDefense(){
+        this.user.defense = true
+        this.console = `Você se preparou para defender`
+        defenseEmitter(socket)
+        this.endTurn()
+      },
+
       unavailable(){
         this.console = `Essa função ainda não está disponível`
       },
 
       initiateCount: function(){
         this.counter = 5
+        this.user.defense = false
 
         clearInterval(this.turnTimer)
         this.turnTimer = setInterval(() => {
@@ -198,6 +237,7 @@
 
       endTurn(){
         clearInterval(this.turnTimer)
+        this.oponnent.defense = false
         this.user.active = false
         socket.emit('changeTurn')
         this.counter = 0
@@ -226,6 +266,12 @@
       // oponnentCure
       socket.on('oponnentCure', (cureValue) => {
         this.oponnentCure(cureValue)
+      })
+
+      // oponnentDefense
+      socket.on('oponnentDefense', () => {
+        this.oponnent.defense = true
+        this.console = `Seu oponente está preparado para se defender`
       })
 
       // 

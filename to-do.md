@@ -1,6 +1,6 @@
 # Backend
 Adicionar mecanismos de cura ✓
-1 - Adicionar função de defesa
+2 - Adicionar função de defesa ✓
 5 - Adicionar mensageria
 
 

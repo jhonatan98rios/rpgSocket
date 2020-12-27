@@ -18,6 +18,12 @@ module.exports = function connection(server){
       socket.to(socket.room).emit('oponnentCure', cureValue)
       io.in(socket.room).emit('toogleTurn')
     })
+
+    // useDefense
+    socket.on('useDefense', () => {
+      socket.to(socket.room).emit('oponnentDefense')
+      io.in(socket.room).emit('toogleTurn')
+    })
   
     // Change the active player
     socket.on('changeTurn', () => {
