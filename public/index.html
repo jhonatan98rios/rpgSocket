@@ -41,9 +41,14 @@
 
       <div class="oponnent">
         <div class="header">
-          <div class="container m-0-a is-flex">
-            <h2> HP: {{ oponnent.health }}</h2>
-            <h2> MP: 200</h2>
+          <div class="container m-0-a is-column is-start m-t-8">
+            <h4 class="m-y-0 f-white"> Oponente </h4>
+            <div class="m-y-0 is-flex w-100 m-t-4"> 
+              <h3 class="f-white m-y-0">HP:</h2> 
+              <div class="life-bar m-l-8 m-t-2">
+                <span :style="oponnentLife" />
+              </div>
+            </div>
           </div>
         </div>
 
@@ -58,12 +63,17 @@
         <p class="turn" v-if="!user.active"> Turno do oponente </p>
         <p class="m-0-a p-0 counter" v-html="counter" />
 
-        <div class="is-flex container m-0-a status">
-          <h2 class="m-0-a p-0" :class="{ 'f-warning' : user.health < 20 }"> HP: {{ user.health }} </h2>
-          <h2 class="m-0-a p-0"> MP: 200 </h2>
+        <div class="is-column container m-0-a status is-start">
+          <h4 class="m-y-0 f-white"> Usuário </h4>
+          <div class="m-y-0 p-0 is-flex w-100">
+            <h3 class="f-white m-y-0"> HP: </h2>
+            <div class="life-bar m-l-8 m-t-2">
+              <span :style="userLife" />
+            </div>
+          </div>
         </div>
 
-        <div class="is-flex m-t-16 is-end panel">
+        <div class="is-flex m-t-8 is-end panel">
           {{ console }}
         </div>
       </div>
@@ -104,6 +114,21 @@
       error: '',
       console: '',
       hasPotion: true
+    },
+
+    computed:{
+      userLife(){
+        return{
+          width: this.user.health / 2 + '%',
+          backgroundColor: `rgb(${ 200 - this.user.health }, ${ this.user.health }, 0)`
+        }
+      },
+      oponnentLife(){
+        return{
+          width: this.oponnent.health / 2 + '%',
+          backgroundColor: `rgb(${ 200 - this.oponnent.health }, ${ this.oponnent.health }, 0)`
+        }
+      }
     },
 
     methods: {
