@@ -1,11 +1,11 @@
 # Backend
 Adicionar mecanismos de cura ✓
-Adicionar função de defesa
-Adicionar mensageria
+1 - Adicionar função de defesa
+5 - Adicionar mensageria
 
 
 # Interface
-Adicionar botão de defesa
-Refazer os icones em svg
-Remover MP
-Adicionar barra de vida
+Adicionar botão de defesa ✓
+3 - Remover MP
+1 - Refazer os icones em svg ✓
+4 - Adicionar barra de vida
