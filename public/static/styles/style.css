@@ -99,7 +99,7 @@
 
 @media(max-height: 768px){
   .personal{
-    position: absolute;
+    position: fixed;
     bottom: 0;
     width: 100%;
   }
