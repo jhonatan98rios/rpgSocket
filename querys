@@ -1,0 +1,5 @@
+SELECT * FROM users
+
+INSERT INTO users VALUES (nextval('users_sequence'), 'user_name', crypt('johnspassword', gen_salt('bf')));
+
+SELECT id FROM users WHERE user_name = 'user_name' AND user_pass = crypt('user_pass', password);

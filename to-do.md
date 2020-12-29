@@ -1,9 +1,9 @@
 # Backend
-Adicionar mecanismos de cura ✓
-2 - Adicionar função de defesa ✓
+Estruturar dados necessários para cada usuário
+Criar rota de consumo de dados 
+Criar rota de edição de dados
 
 # Interface
-Adicionar botão de defesa ✓
-3 - Remover MP ✓
-1 - Refazer os icones em svg ✓
-4 - Adicionar barra de vida ✓
+Criar tela de login
+Criar tela de cadastro
+Criar tela de personagem
