@@ -1,6 +1,5 @@
 # Backend
 Estruturar dados necessários para cada usuário
-Criar rota de consumo de dados 
 Criar rota de edição de dados
 
 # Interface
