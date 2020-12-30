@@ -59,10 +59,6 @@
   margin-top: 8px !important;
 }
 
-.m-l-8{
-  margin-left: 8px;
-}
-
 .m-t-16{
   margin-top: 16px !important;
 }
@@ -75,9 +71,18 @@
   margin-top: 64px !important;
 }
 
+.m-b-8{
+  margin-bottom: 8px !important;
+}
+
 .p-t-64{
   padding-top: 64px !important;
 }
+
+.m-l-8{
+  margin-left: 8px;
+}
+
 
 .m-0-a{
   margin: 0 auto;

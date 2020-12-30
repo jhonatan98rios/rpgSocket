@@ -10,6 +10,8 @@
   <script src="socket.io/socket.io.js"></script>
   <script src="./scripts/controllers.js"></script>
   <script src="./scripts/vue.js"></script>
+  <script src="./scripts/axios.min.js"></script>
+  <script src="./scripts/token.js"></script>
 
   <link rel="stylesheet" href="./static/styles/style.css">
   <link rel="stylesheet" href="./static/styles/global.css">
@@ -19,9 +21,33 @@
 <body>
   <div id="app">
 
-    <!-- Login component -->
-    <form class="welcome m-0-a text-center p-t-64 m-t-32" v-if="!inProgress && !loading" @submit="connectRoom">
-      <h2 class="f-dark"> Seja bem vindo </h2>
+    <div class="welcome m-0-a text-center p-t-64 m-t-32" v-if="!isLogged">
+
+      <!-- Sign component -->
+      <form class="is-column" v-if="!hasAccount" @submit="signAccount">
+        <h2 class="text-center"> Crie uma conta </h2>
+        <input class="w-100 m-b-8" type="text" placeholder="Insira seu usuário" v-model="sign.user">
+        <input class="w-100 m-b-8" type="password" placeholder="Insira sua senha" v-model="sign.pass">
+        <button type="submit"> confirmar </button>
+
+        <p @click="() => hasAccount = true"> Já tem uma conta? </p>
+      </form>
+
+      <!-- Login component -->
+      <form class="is-column" v-if="hasAccount" @submit="loginAccount">
+        <h2 class="text-center"> Faça login </h2>
+        <input class="w-100 m-b-8" type="text" placeholder="Insira seu usuário" v-model="login.user">
+        <input class="w-100 m-b-8" type="password" placeholder="Insira sua senha" v-model="login.pass">
+        <button type="submit"> confirmar </button>
+
+        <p @click="() => hasAccount = false"> Não tem uma conta? </p>
+      </form>
+
+    </div>
+
+    <!-- Room component -->
+    <form class="welcome m-0-a text-center p-t-64 m-t-32" v-if="isLogged && !inProgress && !loading" @submit="connectRoom">
+      <h2 class="f-dark"> Seja bem vindo {{ login.user }} </h2>
       <p> Informe o nome da sala que deseja criar, ou informe o nome de uma sala já existente para se conectar. </p>
 
       <input type="text" placeholder="Insira o nome da sala" v-model="roomID">
@@ -30,6 +56,8 @@
       <small> Nenhum dado será coletado </small>
     </form>
 
+
+    
     <!-- Loading component -->
     <div class="loading m-0-a text-center m-t-64" v-if="loading && !inProgress && !error">
       <h2 class="f-dark"> Aguardando oponente </h2>
@@ -106,6 +134,8 @@
         health: 200,
         defense: false
       },
+      isLogged: false,
+      hasAccount: true,
       inProgress: false,
       loading: false,
       roomID: '',
@@ -113,7 +143,15 @@
       turnTimer: null,
       error: '',
       console: '',
-      hasPotion: true
+      hasPotion: true,
+      login: {
+        user: null,
+        pass: null
+      },
+      sign: {
+        user: null,
+        pass: null
+      }
     },
 
     computed:{
@@ -132,6 +170,85 @@
     },
 
     methods: {
+
+      signAccount: function(e){
+        e.preventDefault()
+
+        if(this.sign.user && this.sign.pass){
+          axios.post('/sign', {
+            user_name: this.sign.user,
+            user_pass: this.sign.pass
+          })
+          .then((response) => {
+
+            alert(response.data)
+            this.sign.user = null
+            this.sign.pass = null
+            this.hasAccount = true
+
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        }
+      },
+
+
+      loginAccount: function(e){
+        e.preventDefault()
+
+        if(this.login.user && this.login.pass){
+
+          axios.post('/login', {
+            user_name: this.login.user,
+            user_pass: this.login.pass
+          })
+          .then((response) => {
+
+            if(response.status == 200){
+              alert('Você está conectado')
+
+              setToken(response.data.token, this.login.user)
+              
+              this.login.pass = null
+              this.isLogged = true
+            }else{
+
+              alert('Erro ao conectar. Verifique seus dados e sua conexão e tente novamente')
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        }
+      },
+
+      loginAccountWithToken: function(username, token){
+      
+        axios.post('/token_login', {
+          user_name: username,
+          token
+        })
+        .then((response) => {
+
+          if(response.status == 200){
+            alert('Você está conectado')
+
+            setToken(response.data.token, username)
+            
+            this.login.pass = null
+            this.isLogged = true
+          }else{
+
+            alert('Erro ao conectar. Verifique seus dados e sua conexão e tente novamente')
+          }
+        })
+        .catch((error) => {
+        console.log(error);
+        });
+      },
+
+
       connectRoom: function(e){
         e.preventDefault()
         if(this.roomID){
@@ -316,6 +433,12 @@
       socket.on('failToEnter', () => {
         this.error = 'Falha ao conectar. A sala esta cheia, desculpe'
       })
+
+      let key = getToken()
+
+      if(key.token && key.user){
+        this.loginAccountWithToken(key.user, key.token)
+      }
     }
   })
 
