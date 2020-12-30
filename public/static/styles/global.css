@@ -9,9 +9,10 @@
 }
 
 body{
-    margin: 0 auto;
-    background-image: radial-gradient(#555, #000);
-    overflow-y: hidden;
+  margin: 0 auto;
+  background-image: radial-gradient(#555, #000);
+  overflow-y: hidden;
+  height: 100vh;
 }
 
 p, button, input, small{

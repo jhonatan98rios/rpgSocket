@@ -77,7 +77,7 @@ const loginToken = async (username, token) => {
       } 
     
     }else {
-      console.log('Usuário ou senha inexistentes/')
+      console.log('Usuário ou senha inexistentes')
     }
 
   } catch (err) {

@@ -23,27 +23,30 @@
 
     <div class="welcome m-0-a text-center p-t-64 m-t-32" v-if="!isLogged">
 
+
       <!-- Sign component -->
       <form class="is-column" v-if="!hasAccount" @submit="signAccount">
-        <h2 class="text-center"> Crie uma conta </h2>
+        <h2 class="text-center f-dark"> Crie uma conta </h2>
         <input class="w-100 m-b-8" type="text" placeholder="Insira seu usuário" v-model="sign.user">
         <input class="w-100 m-b-8" type="password" placeholder="Insira sua senha" v-model="sign.pass">
-        <button type="submit"> confirmar </button>
+        <button class="m-t-8" type="submit"> confirmar </button>
 
         <p @click="() => hasAccount = true"> Já tem uma conta? </p>
       </form>
 
+
       <!-- Login component -->
       <form class="is-column" v-if="hasAccount" @submit="loginAccount">
-        <h2 class="text-center"> Faça login </h2>
+        <h2 class="text-center f-dark"> Conecte-se </h2>
         <input class="w-100 m-b-8" type="text" placeholder="Insira seu usuário" v-model="login.user">
         <input class="w-100 m-b-8" type="password" placeholder="Insira sua senha" v-model="login.pass">
-        <button type="submit"> confirmar </button>
+        <button class="m-t-8" type="submit"> confirmar </button>
 
         <p @click="() => hasAccount = false"> Não tem uma conta? </p>
       </form>
 
     </div>
+
 
     <!-- Room component -->
     <form class="welcome m-0-a text-center p-t-64 m-t-32" v-if="isLogged && !inProgress && !loading" @submit="connectRoom">
@@ -53,7 +56,6 @@
       <input type="text" placeholder="Insira o nome da sala" v-model="roomID">
       <button type="submit"> confirmar </button>
       <small class="m-t-32"> Este jogo é uma versão de testes e <br> pode apresentar bugs e limitações </small>
-      <small> Nenhum dado será coletado </small>
     </form>
 
 

@@ -20,27 +20,34 @@
   color: #333333;
 }
 
-.welcome > input{
+.welcome input{
   border: none;
   background-color: transparent;
   border-bottom: 1px #333333 solid;
   margin: 16px auto;
-  font-size: 16px;
+  font-size: 14px;
 }
 
-.welcome > input:focus{
+.welcome input:focus{
   outline: none;
 }
 
-.welcome > button{
+.welcome button{
   background-color: transparent;
   border: none;
   width: 100px;
   height: 32px;
+  cursor: pointer;
+  font-size: 14px;
 }
 
-.welcome > button:focus{
+.welcome button:focus{
   outline: none;
+}
+
+.welcome p{
+  cursor: pointer;
+  font-size: 14px;
 }
 
 /* Loading */
