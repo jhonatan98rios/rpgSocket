@@ -436,7 +436,7 @@
 
       let key = getToken()
 
-      if(key.token && key.user){
+      if(key && key.token && key.user){
         this.loginAccountWithToken(key.user, key.token)
       }
     }

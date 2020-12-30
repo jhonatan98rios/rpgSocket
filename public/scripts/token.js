@@ -14,10 +14,6 @@ function getToken() {
 
     if (validity > now) {
 
-      console.log("validity", validity)
-      console.log("token", key.split('::')[0])
-      console.log("user", key.split('::')[1])
-
       return {
         token: key.split('::')[0],
         user: key.split('::')[1]
