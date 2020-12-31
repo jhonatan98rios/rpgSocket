@@ -3,6 +3,7 @@ const app = express()
 const server = require('http').createServer(app)
 const connection = require('./controllers/socketController')
 const bodyParser = require('body-parser')
+const cors = require('cors')
 const { createUser, loginUser, loginToken } = require('./controllers/userController')
 
 
@@ -14,7 +15,8 @@ server.listen(process.env.PORT || 3000, () => {
 
 // Configure de server
 app.use(express.static(__dirname + "/public"))
-app.use(bodyParser.json());   
+app.use(bodyParser.json())
+app.use(cors())   
 
 
 // Create a new User

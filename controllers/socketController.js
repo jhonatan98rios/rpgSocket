@@ -3,7 +3,12 @@ const roomController = require('./roomController')
 
 module.exports = function connection(server){
 
-  io = socketio(server)
+  io = socketio(server, {
+    cors: {
+      origin: "http://localhost:8080",
+      methods: ["GET", "POST"]
+    }
+  })
 
   io.on('connection', async (socket) => {
   
