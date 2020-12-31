@@ -7,11 +7,12 @@
   <meta name="theme-color" content="#000000" />
   <title>RPG.io</title>
 
-  <script src="socket.io/socket.io.js"></script>
-  <script src="./scripts/controllers.js"></script>
   <script src="./scripts/vue.js"></script>
   <script src="./scripts/axios.min.js"></script>
+  <script src="socket.io/socket.io.js"></script>
+  <script src="./scripts/controllers.js"></script>
   <script src="./scripts/token.js"></script>
+  <script src="./scripts/spriteAnimation.js"></script>
 
   <link rel="stylesheet" href="./static/styles/style.css">
   <link rel="stylesheet" href="./static/styles/global.css">
@@ -83,7 +84,11 @@
         </div>
 
         <div class="view">
-          <img ref="opponent" src="./static/images/warrior.png" alt="oponente">
+          <img 
+            ref="opponent" 
+            src="./static/images/character/0_Warrior_Attack_1_0.png"
+            alt="oponente"
+          >
         </div>
       </div>
       
@@ -134,7 +139,8 @@
       },
       oponnent: {
         health: 200,
-        defense: false
+        defense: false,
+        spriteInterval: null
       },
       isLogged: false,
       hasAccount: true,
@@ -324,7 +330,7 @@
             if (dmg > 15) this.console += '\nAtaque crítico!'
             
             // Make animation
-            makeAnimation(this.$refs.opponent)
+            this.spriteAnimation(this.$refs.opponent, 'damage_sprites', 75)
   
           }else{
             // Missed attack
@@ -385,6 +391,29 @@
         this.user.active = false
         socket.emit('changeTurn')
         this.counter = 0
+      },
+
+      /* Animations */
+
+      spriteAnimation(opponent, animation, interval = 140){
+        clearInterval(this.oponnent.spriteInterval)
+        let sprite = 1
+
+        this.oponnent.spriteInterval = setInterval(() => {
+
+          sprite = (sprite < sprites[animation].length -1) ? sprite + 1 : 0
+          opponent.src = sprites[animation][sprite]
+
+        }, interval)
+
+        if(animation == "damage_sprites"){
+          damageAnimation(opponent)
+          setTimeout(()=> this.spriteAnimation(opponent, "static_sprites"), 900)
+        }
+
+        if(animation == "attack_sprites"){
+          setTimeout(()=> this.spriteAnimation(opponent, "static_sprites"), 450)
+        }
       }
     },
 
@@ -400,10 +429,15 @@
         this.health = 200
         this.inProgress = true
         this.loading = false
+
+        setTimeout(() => {
+          this.spriteAnimation(this.$refs.opponent, 'static_sprites')
+        }, 100)
       })
 
       // Inflinct damage in the player
       socket.on('damage', (dmg) => {
+        this.spriteAnimation(this.$refs.opponent, 'attack_sprites', 30)
         this.damage(dmg)
       })
 
@@ -436,12 +470,12 @@
         this.error = 'Falha ao conectar. A sala esta cheia, desculpe'
       })
 
+      // Auto login
       let key = getToken()
-
       if(key && key.token && key.user){
         this.loginAccountWithToken(key.user, key.token)
       }
-    }
+    },
   })
 
 </script>

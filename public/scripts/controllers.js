@@ -23,15 +23,6 @@ function attackEmiter(socket, blocking) {
   return damage
 }
 
-function makeAnimation(opponent) {
-  opponent.classList.add("blink")
-
-  let blinker = setInterval(() => {
-    opponent.classList.remove("blink")
-    clearInterval(blinker)
-  }, 1000)
-}
-
 function cureEmitter(socket, userHealth){
   let cureValue = (Math.floor(Math.random() * 20)) + 10
 
