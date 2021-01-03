@@ -1,11 +1,12 @@
 const socketio = require('socket.io')
 const roomController = require('./roomController')
+const dotenv = require('dotenv');
 
 module.exports = function connection(server){
 
   io = socketio(server, {
     cors: {
-      origin: "https://sword-io.herokuapp.com",
+      origin: process.env.ORIGIN,
       methods: ["GET", "POST"]
     }
   })
