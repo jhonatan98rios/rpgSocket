@@ -5,7 +5,7 @@ module.exports = function connection(server){
 
   io = socketio(server, {
     cors: {
-      origin: "http://localhost:8080",
+      origin: "https://sword-io.herokuapp.com",
       methods: ["GET", "POST"]
     }
   })
