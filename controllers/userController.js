@@ -6,6 +6,14 @@ const createUser = async (user_name, user_pass) => {
   try {
     let token = generateToken(user_name)
 
+    let existentUser = await db.query(`
+      SELECT * FROM users 
+      WHERE user_name = $1;`, 
+      [user_name]
+    )
+
+    if(existentUser.rows[0]) return false
+
     let result = await db.query(`
       INSERT INTO users (user_name, user_pass, token) 
       VALUES ($1, crypt($2, gen_salt('bf', 8)), $3);`, 
@@ -14,8 +22,8 @@ const createUser = async (user_name, user_pass) => {
     return result.rowCount
 
   }catch(err){
-    console.log(err)
-    return err
+
+    return 'err'
   }
 }
 
@@ -33,7 +41,7 @@ const loginUser = async (user_name, user_pass) => {
       [user_name, user_pass]
     )
 
-    if(user.rows[0]){
+    if(user.rowCount > 0){
 
       updateToken(user_name, newToken)
 
@@ -43,12 +51,11 @@ const loginUser = async (user_name, user_pass) => {
       } 
     
     }else {
-      console.log('Usuário ou senha inexistentes')
+      return false
     }
 
   } catch (err) {
-    console.log(err)
-    //return err
+    return err
   }
 }
 
@@ -67,7 +74,7 @@ const loginToken = async (username, token) => {
       [username, token]
     )
 
-    if(user.rows[0]){
+    if(user.rows.length > 0){
 
       updateToken(username, newToken)
 
@@ -77,12 +84,11 @@ const loginToken = async (username, token) => {
       } 
     
     }else {
-      console.log('Usuário ou senha inexistentes')
+      return false
     }
 
   } catch (err) {
-    console.log(err)
-    //return err
+    return err
   }
 }
 
@@ -100,7 +106,7 @@ const updateToken = async (user_name, token) => {
     return user
 
   } catch (err) {
-    console.log(err)
+    return err
   }
   
 }
