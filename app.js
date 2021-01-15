@@ -5,6 +5,7 @@ const connection = require('./controllers/socketController')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const { createUser, loginUser, loginToken } = require('./controllers/userController')
+const { levelUp } = require('./controllers/perfilController')
 
 
 // Create the server
@@ -73,15 +74,24 @@ app.post('/login', async function(req, res){
 app.post('/token_login', async function(req, res){
   let result = await loginToken(req.body.user_name, req.body.token)
   if(result.user){
-
     res.status(200)
     res.send(result)
-
   }else{
-
     res.status(404)
     res.send('Token inválido')
+  }
+})
 
+// Level Up
+app.post('/level_up', async function(req, res){
+  let result = await levelUp(req.body.perfil)
+  if(result) {
+    res.status(200)
+    res.send('Parabéns, você subiu de nível!!')
+  }
+  else{
+    res.status(404)
+    res.send('Erro ao atualizar o nível')
   }
 })
 

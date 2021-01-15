@@ -1,4 +1,5 @@
 const db = require('../database/connection')
+//const { mountPerfil } = require('./perfilController')
 const crypt = require("crypto")
 
 // Create a new Users
@@ -45,9 +46,15 @@ const loginUser = async (user_name, user_pass) => {
 
       updateToken(user_name, newToken)
 
+      let { nv, xp, next, hp, attack, defense, points } = user.rows[0]
+
       return {
         user: user.rows[0].user_name,
-        token: newToken
+        token: newToken,
+        perfil: {
+          user: user.rows[0].user_name,
+          nv, xp, next, hp, attack, defense, points
+        } 
       } 
     
     }else {
@@ -78,9 +85,15 @@ const loginToken = async (username, token) => {
 
       updateToken(username, newToken)
 
+      let { nv, xp, next, hp, attack, defense, points } = user.rows[0]
+
       return {
         user: user.rows[0].user_name,
-        token: newToken
+        token: newToken,
+        perfil: {
+          user: user.rows[0].user_name,
+          nv, xp, next, hp, attack, defense, points
+        }
       } 
     
     }else {
