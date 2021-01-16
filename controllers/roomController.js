@@ -12,8 +12,7 @@ async function createRoom(id, socket, io){
 
       if(clients == 2){
         // Start a game when the room has 2 clients
-        io.in(id).emit('startGame')
-        socket.emit('turnOn')
+        io.in(id).emit('dataBinding')
       }
 
     }else{

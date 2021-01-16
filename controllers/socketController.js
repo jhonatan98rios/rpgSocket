@@ -37,9 +37,14 @@ module.exports = function connection(server){
     })
 
     //  Enter in room
-    socket.on('connectRoom', id => {
-      socket.room = id
-      roomController.createRoom(id, socket, io)
+    socket.on('connectRoom', data => {
+      socket.room = data.id
+      roomController.createRoom(data.id, socket, io)
+    })
+
+    //  Data binding between users
+    socket.on('sendPlayerData', perfil => {
+      socket.to(socket.room).emit('startGame', perfil)
     })
   
     // Exit the room
