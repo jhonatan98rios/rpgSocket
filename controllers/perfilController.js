@@ -2,8 +2,6 @@ const db = require('../database/connection')
 
 async function levelUp(perfil){
 
-  console.log(perfil)
-
   try {
     let { user, nv, xp, next, hp, attack, defense, points } = perfil
 

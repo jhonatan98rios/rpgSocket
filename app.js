@@ -32,13 +32,11 @@ app.post('/sign', async function(req, res) {
   }else if(result == false){
 
     res.status(409)
-    console.log('Esse nome de usuário já existe')
     res.send(`Esse nome de usuário já existe`)
 
   } else {
 
     res.status(400)
-    console.log('Erro ao conectar')
     res.send('Erro a conectar')
 
   }
@@ -49,8 +47,6 @@ app.post('/sign', async function(req, res) {
 app.post('/login', async function(req, res){
 
   let result = await loginUser(req.body.user_name, req.body.user_pass)
-
-  console.log(result)
 
   if(result.user){
 
